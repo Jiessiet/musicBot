@@ -1,0 +1,142 @@
+apply plugin: 'com.android.application'
+apply plugin: 'com.mob.sdk'
+
+MobSDK {
+    appKey "2d938318a3659"
+    appSecret "cccee84f68fc522a0faaba8de5c804c4"
+
+    ShareSDK {
+        //平台配置信息
+        devInfo {
+            Wechat {
+                appId "wx2f717ab0cf058aa8"
+                appSecret "1c05a051d380afbaa51f26359c3ada39"
+            }
+            WechatMoments {
+                appId "wx2f717ab0cf058aa8"
+                appSecret "1c05a051d380afbaa51f26359c3ada39"
+            }
+            WechatFavorite {
+                appId "wx2f717ab0cf058aa8"
+                appSecret "1c05a051d380afbaa51f26359c3ada39"
+            }
+//            QQ {
+//                appId "100371282"
+//                appKey "aed9b0303e3ed1e27bae87c33761161d"
+//                shareByAppClient true
+//            }
+//            Douyin {
+//                appKey "aw9ivykfjvi4hpwo"
+//                appSecret "42b4caa6bda60bd49f05f06d0a4956e1"
+//                callbackAct "cn.pistachio.www.music.activity.LoginActivity"
+//                enable true
+//            }
+        }
+    }
+
+}
+android {
+    compileSdkVersion 29
+    buildToolsVersion '29.0.0'
+    defaultConfig {
+        applicationId "cn.pistachio.www.music"
+        minSdkVersion 17
+        targetSdkVersion 27
+        versionCode 1
+        versionName "1.0"
+        ndk {
+            //选择要添加的对应cpu类型的.so库。
+            abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a', 'mips', 'mips64', "arm64-v8a", "x86"
+        }
+//        externalNativeBuild {
+//            cmake {
+//                cppFlags ""
+//                //生成多个版本的so文件
+//                abiFilters 'arm64-v8a','armeabi-v7a','x86','x86_64'
+//            }
+//        }
+        //禁止 Gradle 检查 PNG 的合法性
+        aaptOptions.cruncherEnabled = false
+        aaptOptions.useNewCruncher = false
+    }
+
+//    externalNativeBuild {
+//        cmake {
+//            path "CMakeLists.txt"  // 设置所要编写的c源码位置，以及编译后so文件的名字
+//        }
+//    }
+
+    signingConfigs {
+        release {
+            storeFile file(KEYSTORY_FILE)
+            storePassword KEYSTORY_PASSWORD
+            keyAlias KEY_ALIAS
+            keyPassword KEY_PASSWORD
+        }
+    }
+    buildTypes {
+        release {
+            //是否混淆
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+        debug {
+            signingConfig signingConfigs.release
+        }
+    }
+    dexOptions {
+
+        //dexInProcess true
+        preDexLibraries false
+        javaMaxHeapSize "8g"//越大越好
+
+    }
+
+    packagingOptions {
+        exclude 'META-INF/proguard/androidx-annotations.pro'
+    }
+}
+
+configurations.all {
+    resolutionStrategy {
+//        failOnVersionConflict()
+
+//        force 'com.android.support:support - annotations: 28.0.0'
+//        force 'com.android.support:support - annotations: 23.4.0'
+//        force 'com.android.support:support - annotations: 26.1.0'
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+//    implementation 'com.android.support:appcompat-v7:28.0.0'
+//    implementation 'com.android.support:design:28.0.0'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
+    implementation 'com.android.support:support-annotations:23.+'
+//    implementation 'com.android.support:support-v4:28.0.0'
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    //okhttp
+    implementation 'com.zhousf.lib:okhttp3:2.9.6'
+
+    //glide
+    implementation 'com.github.bumptech.glide:glide:4.7.1'
+
+    //multidex
+    implementation 'com.android.support:multidex:1.0.0'
+
+    implementation 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0'
+    implementation 'com.scwang.smartrefresh:SmartRefreshHeader:1.1.0'
+    implementation 'de.hdodenhof:circleimageview:3.0.1'
+
+    //录像
+    implementation 'androidx.annotation:annotation:1.0.0'
+    implementation 'com.qw:soulpermission:1.2.0'
+    implementation 'org.jetbrains:annotations-java5:15.0'
+    implementation 'com.android.support:recyclerview-v7:23.+'
+    //noinspection GradleCompatible,GradleCompatible
+    implementation 'com.android.support:cardview-v7:23.+'
+
+
+    implementation 'com.android.support:appcompat-v7:28.0.0'
+}
